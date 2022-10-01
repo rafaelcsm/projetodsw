@@ -1,17 +1,17 @@
 
-const {getObrasDeArte,addFoto} = require('../models/home');
+const {addConvidado} = require('../models/home');
 
 
 module.exports.home = (app,req,res) =>{
-    getObrasDeArte((error,result) =>{
-        res.render('home.ejs', {foto: result});
-    });
+    
+    res.render('home.ejs');
+    
     
 }
 
-module.exports.addFoto = (app,req,res) =>{
+module.exports.addConvidado = (app,req,res) =>{
     let foto = req.body;
-    addFoto(foto,(error,result) =>{
+    addConvidado(foto,(error,result) =>{
         console.log("log erro:",error);
         res.redirect('/');
     });
