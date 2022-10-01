@@ -1,5 +1,5 @@
 const { formatWithOptions } = require('util');
-const {home, addFoto} = require('../controllers/home');
+const {home, addConvidadoController} = require('../controllers/home');
 const { getTodosConvidadosController } = require('../controllers/listaConvidados');
 
 module.exports = {
@@ -9,15 +9,15 @@ module.exports = {
         });
     },
     inserirConvidado: (app) =>{
-        app.get('/inserirfoto', (req,res) =>{
-            res.render('novaFoto.ejs');
+        app.get('/inserirConvidado', (req,res) =>{
+            res.render('infoConvidado.ejs');
         })
     },
     addConvidado: (app) =>{
-        app.post('/addObra',(req,res) =>{
-            let foto = req.body;
+        app.post('/addConvidado',(req,res) =>{
+            let convidado = req.body;
             
-            addFoto(app,req,res);
+            addConvidadoController(app,req,res);
         })
     },
     getListaConvidados: (app) =>{

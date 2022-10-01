@@ -5,11 +5,9 @@ const {addConvidado} = require('../models/home');
 module.exports.home = (app,req,res) =>{
     
     res.render('home.ejs');
-    
-    
 }
 
-module.exports.addConvidado = (app,req,res) =>{
+module.exports.addConvidadoController = (app,req,res) =>{
     let foto = req.body;
     addConvidado(foto,(error,result) =>{
         console.log("log erro:",error);
