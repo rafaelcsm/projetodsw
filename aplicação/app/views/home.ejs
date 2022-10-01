@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home</title>
+</head>
+<body>
+    
+    <nav>
+        <ul>
+            <li>
+                <a href='/'>Home |</a>
+                <a href='/inserirfoto'>Inserir Foto</a>
+            </li>
+        </ul>
+    </nav>
+
+    <h3> OBRAS DE ARTE</h3>
+
+    <div>
+        <div>
+            <% for (let i=0; i<foto.length; i++){ %>
+                <div>
+                    <h5>
+                        <%= foto[i].nome %>
+                    </h5>
+                    <img src="<%= foto[i].urlfoto %>" alt="<%= foto[i].nome %>">
+                    <div>
+                        <p>
+                            <%= foto[i].artista %>
+                        </p>
+                        
+                    </div>
+                </div>
+            <% } %>
+
+    </div>
+
+
+
+
+
+</body>
+</html>
