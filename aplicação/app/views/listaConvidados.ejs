@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lista de Convidados</title>
+    <style>
+        .cabecalho{
+            display: grid;
+            grid-template-columns: 80% 20%;
+            align-items: center;
+        }
+        .linha{
+            display: grid;
+            grid-template-columns: 10% 70% 20%;
+            align-items: center;
+            border: 1px solid black;
+        }
+    </style>
+</head>
+<body>
+    <h3>Lista de Convidados</h3>
+
+    <div>
+        
+        <div class="cabecalho">
+            <div>Nome Convidados</div>
+            <div>Status</div>
+        </div>
+        <% for (let i=0; i<convidados.length; i++){ %>
+            <div class="linha">
+                <div>
+                    <a href="/detalheConvidado?idConvidado= <%= convidados[i].idConvidado %>">editar</a>
+                </div>
+                <div>
+                    <p>
+                        nome <%= convidados.nome %>
+                    </p>
+                </div>
+                <div>
+                    <p>
+                        status<%= convidados.status %>
+                    </p>
+                </div>
+            </div>
+            
+        <% } %>
+    </div>
+
+</body>
+</html>

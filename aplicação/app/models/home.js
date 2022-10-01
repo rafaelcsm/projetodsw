@@ -12,4 +12,5 @@ module.exports = {
         VALUES ("${foto.nome}", "${foto.urlfoto}","${foto.artista}");`
         connection.query(sql, callback);
     }
+    
 }

@@ -1,5 +1,6 @@
 const { formatWithOptions } = require('util');
-const {home, addFoto} = require('../controllers/home');
+const {home, addFoto, acessoAdm} = require('../controllers/home');
+const { getTodosConvidadosController } = require('../controllers/listaConvidados');
 
 module.exports = {
     home: (app) => {
@@ -15,8 +16,13 @@ module.exports = {
     addFoto: (app) =>{
         app.post('/addObra',(req,res) =>{
             let foto = req.body;
-            console.log("objeto foto rota: ",foto);
+            
             addFoto(app,req,res);
+        })
+    },
+    getListaConvidados: (app) =>{
+        app.get('/listaDeConvidados',(req,res) =>{
+            getTodosConvidadosController(app,req,res);
         })
     }
 };

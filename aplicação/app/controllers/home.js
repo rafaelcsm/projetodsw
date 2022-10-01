@@ -1,4 +1,4 @@
-const dbConnection = require('../../config/dbServer');
+
 const {getObrasDeArte,addFoto} = require('../models/home');
 
 
@@ -16,4 +16,8 @@ module.exports.addFoto = (app,req,res) =>{
         res.redirect('/');
     });
     
+}
+
+module.exports.acessoAdm = (app,req,res) =>{
+    res.render('loginAdm.ejs');
 }
