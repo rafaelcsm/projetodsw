@@ -1,9 +1,8 @@
 const { addConvidado } = require("../models/home");
-const { getTodosConvidados } = require("../models/listaConvidados");
+const { getTodosConvidados, getConvidado } = require("../models/listaConvidados");
 
 module.exports.getTodosConvidadosController = (app,req,res) =>{
     getTodosConvidados((error,result) =>{
-        console.log("Busca dos convidados >>>>", result);
         if(error){
             console.log("Erro ao buscar todos os convidados >>> ",error);
             let erro = {}; 
@@ -14,7 +13,15 @@ module.exports.getTodosConvidadosController = (app,req,res) =>{
                     level: 'bancoDeDados',
                     message: error.sqlMessage
                 });
-            }else{
+            }else if(error.errno == 1045){
+                erro.mensagem = "A senha do banco de dados está incorreta";
+                erro.codigo = 1045;
+                logger.log({
+                    level: 'bancoDeDados',
+                    message: error.sqlMessage
+                });
+            }
+            else{
                 erro.mensagem = "Tivemos um problema ao buscar todos os convidados";
                 erro.codigo = 0000;
                 logger.log({
@@ -37,5 +44,15 @@ module.exports.addConvidadoController = (app,req,res) =>{
         console.log("Resultado da inserção >>> ",result);
         console.log("Erro ao inserir >>> ",error);
         res.redirect('/');
+    })
+}
+module.exports.detalheConvidadoController = (app,req,res) =>{
+    let convidado = req.query;
+    getConvidado(convidado.idConvidado,(error,result) =>{
+        if(error){
+            console.log(error);
+        }else{
+            res.render('infoConvidado',{erro: {}, convidado: result});
+        }
     })
 }

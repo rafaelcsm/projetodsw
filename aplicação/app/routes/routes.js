@@ -1,7 +1,7 @@
 const { check, validationResult } = require('express-validator');
 const { formatWithOptions } = require('util');
 const {home} = require('../controllers/home');
-const { getTodosConvidadosController, addConvidadoController } = require('../controllers/listaConvidados');
+const { getTodosConvidadosController, addConvidadoController, detalheConvidadoController } = require('../controllers/listaConvidados');
 
 module.exports = {
     home: (app) => {
@@ -39,6 +39,8 @@ module.exports = {
         })
     },
     getConvidado: (app) =>{
-        app.get('/detalheConvidado',(req,res))
+        app.get('/detalheConvidado',(req,res)=>{
+            detalheConvidadoController(app,req,res);
+        })
     }
 };

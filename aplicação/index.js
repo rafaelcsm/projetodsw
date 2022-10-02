@@ -8,3 +8,4 @@ routes.home(app);
 routes.addConvidado(app);
 routes.inserirConvidado(app);
 routes.getListaConvidados(app); 
+routes.getConvidado(app);
