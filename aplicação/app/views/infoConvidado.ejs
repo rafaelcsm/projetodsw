@@ -10,11 +10,11 @@
     <div class="container">
 		<h1>Informações Convidado</h1>
 		<section>
-			<% if(errors) { %>
+			<% if(erro) { %>
 				<ul>
-					<% for(let i = 0; i < errors.length; i++){ %>
+					<% for(let i = 0; i < erro.length; i++){ %>
 						<li>
-							<%= errors[i].msg %>
+							<%= erro[i].msg %>
 						</li>
 					<% } %>
 				</ul>
