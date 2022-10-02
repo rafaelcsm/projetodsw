@@ -3,8 +3,8 @@ const { getTodosConvidados } = require("../models/listaConvidados");
 
 module.exports.getTodosConvidadosController = (app,req,res) =>{
     getTodosConvidados((error,result) =>{
-        
-        if(!error.Empty){
+        console.log("Busca dos convidados >>>>", result);
+        if(error){
             console.log("Erro ao buscar todos os convidados >>> ",error);
             let erro = {}; 
             if(error.errno == 1146){
