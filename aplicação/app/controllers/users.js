@@ -15,7 +15,6 @@ module.exports.addUserController = (app, req, res) =>{
             res.end("Erro ao Cadastrar usuario");
         }else{
             getTodosConvidadosController(app,req,res);
-            //res.redirect('listaConvidados.ejs');
         }
         
         
@@ -35,9 +34,15 @@ module.exports.addUserController = (app, req, res) =>{
                     req.session.userName = user.email;
                     req.session.loggedIn = true;
                     getTodosConvidadosController(app,req,res);
-                    //res.render('listaConvidados.ejs');
                 }else{
-                    res.end("Usuario não autenticado");
+                    let error = {};  
+                    error.code = "Acesso não autorizado";
+                    
+                    logger.log({
+                        level: 'autenticação',
+                        message: error.message
+                    });
+                    res.render('errorView', {erro: error})
                 }
             }
             

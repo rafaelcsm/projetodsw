@@ -22,5 +22,8 @@ module.exports = {
         app.get('/listaDeConvidados',(req,res) =>{
             getTodosConvidadosController(app,req,res);
         })
+    },
+    getConvidado: (app) =>{
+        app.get('/detalheConvidado',(req,res))
     }
 };
