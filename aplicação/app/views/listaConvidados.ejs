@@ -21,7 +21,7 @@
 </head>
 <body>
     <h3>Lista de Convidados</h3>
-
+    <a href="/inserirConvidado">Novo Convidado</a>
     <div>
         
         <div class="cabecalho">
@@ -35,12 +35,12 @@
                 </div>
                 <div>
                     <p>
-                        nome <%= convidados.nome %>
+                        <%= convidados[i].nome %>
                     </p>
                 </div>
                 <div>
                     <p>
-                        status<%= convidados.status %>
+                        <%= convidados[i].status %>
                     </p>
                 </div>
             </div>

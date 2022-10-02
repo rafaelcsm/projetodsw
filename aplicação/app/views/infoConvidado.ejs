@@ -7,6 +7,26 @@
     <title>Informações Convidado</title>
 </head>
 <body>
-    <h3>Informações Convidado</h3>
+    <div class="container">
+		<h1>Informações Convidado</h1>
+		<section>
+			<% if(errors) { %>
+				<ul>
+					<% for(let i = 0; i < errors.length; i++){ %>
+						<li>
+							<%= errors[i].msg %>
+						</li>
+					<% } %>
+				</ul>
+			<% } %>
+		</section>
+
+		<form class="form" action="/addConvidado" method="post">
+			<input type="text" name="nome" placeholder="Digite o nome do convidado" value=<%= convidado.nome %>>
+			<input type="text" name="emailConvidado" placeholder="Digite o email do convidado" value=<%= convidado.emailConvidado %>>
+			
+			<button type="submit" value="enviar">Salvar</button>
+		</form>
+	</div>
 </body>
 </html>
