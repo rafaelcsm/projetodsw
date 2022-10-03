@@ -27,7 +27,25 @@ module.exports.addUserController = (app, req, res) =>{
         //user.password = passwordCrypto;
         authUser(user, (error, result) => {
             if(error) {
-                res.end("Erro ao autenticar usuario");
+                let erro = {};
+                if(error.errno == 1045){
+                    erro.mensagem = "A senha do banco de dados está incorreta";
+                    erro.codigo = 1045;
+                    logger.log({
+                        level: 'bancoDeDados',
+                        message: error.sqlMessage
+                    });
+                    res.render('errorView', {erro: erro})
+                }else{
+                    erro.mensagem = "Tivemos um problema ao autenticar seu usuário";
+                    erro.codigo = 0000;
+                    logger.log({
+                        level: 'desconhecido',
+                        message: error.code
+                    });
+                }
+                res.render('errorView', {erro: erro})
+                /*res.end("Erro ao autenticar usuario");*/
                 console.log(error);
             }else{
                 

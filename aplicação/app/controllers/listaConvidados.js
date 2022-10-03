@@ -52,7 +52,7 @@ module.exports.detalheConvidadoController = (app,req,res) =>{
         if(error){
             console.log(error);
         }else{
-            res.render('infoConvidado',{erro: {}, convidado: result});
+            res.render('infoConvidado',{erro: {}, convidado: result[0]});
         }
     })
 }

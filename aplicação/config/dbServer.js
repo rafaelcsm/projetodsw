@@ -3,7 +3,7 @@ const mysql = require('mysql');
 
 const host = 'localhost';
 const user = 'root';
-const password = 'amlabs';
+const password = 'admin123';
 const database = 'projeto';
 
 module.exports = () =>{

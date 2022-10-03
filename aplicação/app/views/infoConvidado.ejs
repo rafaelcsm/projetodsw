@@ -20,10 +20,9 @@
 				</ul>
 			<% } %>
 		</section>
-
 		<form class="form" action="/addConvidado" method="post">
-			<input type="text" name="nome" placeholder="Digite o nome do convidado" value=<%= convidado[0].nome %>>
-			<input type="text" name="emailConvidado" placeholder="Digite o email do convidado" value=<%= convidado[0].emailConvidado %>>
+			<input type="text" name="nome" placeholder="Digite o nome do convidado" value=<%= convidado.nome %>>
+			<input type="text" name="emailConvidado" placeholder="Digite o email do convidado" value=<%= convidado.emailConvidado %>>
 			
 			<button type="submit" value="enviar">Salvar</button>
 		</form>
