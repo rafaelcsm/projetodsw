@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Presença Convidado</title>
+</head>
+<body>
+    <div class="container">
+		<h2>Confirmação de Presença Convidado</h2>
+		<section>
+			<% if(erro) { %>
+				<ul>
+					<% for(let i = 0; i < erro.length; i++){ %>
+						<li>
+							<%= erro[i].msg %>
+						</li>
+					<% } %>
+				</ul>
+			<% } %>
+		</section>
+
+		<form class="form" action="/attendConvidado" method="post">
+			<h3>Digite seu e-mail de convidado para continuar</h3>
+			<input type="text" name="emailConvidado" placeholder="Digite o email do convidado" >
+			<button type="submit" value="enviar">Acessar</button>
+		</form>
+	</div>
+</body>
+</html>

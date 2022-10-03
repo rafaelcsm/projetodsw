@@ -9,3 +9,5 @@ routes.addConvidado(app);
 routes.inserirConvidado(app);
 routes.getListaConvidados(app); 
 routes.getConvidado(app);
+
+routes.attendConvidado(app);

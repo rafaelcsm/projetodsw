@@ -42,5 +42,11 @@ module.exports = {
         app.get('/detalheConvidado',(req,res)=>{
             detalheConvidadoController(app,req,res);
         })
-    }
+    },
+    attendConvidado: (app) =>{
+        app.get('/attendConvidado', (req,res) =>{
+            res.render('attendConvidado.ejs',{erro:{}, convidado: {}});
+        })
+    },
 };
+
