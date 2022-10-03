@@ -54,14 +54,15 @@ module.exports.addUserController = (app, req, res) =>{
                     req.session.loggedIn = true;
                     getTodosConvidadosController(app,req,res);
                 }else{
-                    let error = {};  
-                    error.code = "Acesso não autorizado";
+                    let erro = {};  
+                    erro.mensagem = "Acesso não autorizado";
+                    erro.codigo = 00000
                     
                     logger.log({
                         level: 'autenticação',
-                        message: error.message
+                        message: erro.message
                     });
-                    res.render('errorView', {erro: error})
+                    res.render('errorView', {erro: erro})
                 }
             }
             
