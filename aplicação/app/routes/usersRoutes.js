@@ -2,18 +2,20 @@
 const { check, validationResult } = require('express-validator');
 const { addUserController, authUserController } = require('../controllers/users');
 const {home} = require('../controllers/home');
-
+const UserController = require("../controllers/users")
 module.exports ={
     
     
     authUserForm: (app) =>{
         app.get('/administrador', function (req, res){
-            
+            console.log("Rota login");
             res.render('loginAdm.ejs', {error: {}, user: {}});
         })
     },
     authUser: (app) => {
-        app.post('/authUser', 
+        console.log("Rota auth User");
+        app.post('/authUser', UserController.authUser);
+        /*app.post('/authUser', 
         [
             check('email').isEmail().normalizeEmail().withMessage('Email Inválido'),
             
@@ -30,7 +32,7 @@ module.exports ={
                 authUserController(app, req, res);
             }
             
-        });
+        });*/
     },
     encerraSessao: (app) =>{
         app.get('/encerrar', (req, res) => {

@@ -1,4 +1,21 @@
-const { addConvidado } = require("../models/home");
+const ConvidadosModel = require('../models/listaConvidados');
+
+module.exports = class ConvidadosController{
+    static async getAllConvidados (req,res, next){
+        try{
+            const convidados = await ConvidadosModel.getAllConvidados();
+            convidados.forEach(convidado => {
+                console.log(`Controller Get all convidados: ${convidado.nome, convidado.emailConvidado}`)
+            })
+            res.render('listaConvidados.ejs', {convidados: convidados});
+        }catch(error){
+            console.log(error);
+            res.status(500).json({error: error});
+        }
+    }
+
+}
+/*const { addConvidado } = require("../models/home");
 const { getTodosConvidados, getConvidado } = require("../models/listaConvidados");
 
 module.exports.getTodosConvidadosController = (app,req,res) =>{
@@ -56,3 +73,4 @@ module.exports.detalheConvidadoController = (app,req,res) =>{
         }
     })
 }
+*/
