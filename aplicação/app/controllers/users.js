@@ -1,38 +1,49 @@
 
 const UsersModel = require('../models/users');
-const ConvidadosController = require('../controllers/listaConvidados');
+const jwt = require('jsonwebtoken');
+const SECRET = 'autenticar';
 
 
 const Joi = require('joi');
-const schema = Joi.object().keys({
-    nome: Joi.string().required().min(1).max(50),
-    emailConvidado: Joi.string().email(),
-    status: Joi.number().min(1).max(3)
+const schemaUser = Joi.object().keys({
+    email: Joi.string().email(),
+    password: Joi.number().min(1).max(3)
     
  });
 
 module.exports = class UsersController {
     static async authUser(req, res, next){
         console.log('Controller Users');
+        const {error, value} = schemaUser.validate(req.body);
+        if(error){
+            const result = {
+                msg:'Os dados para autenticação do usuário estão incorretos.',
+                error: error.details
+            }
+            res.status(400).json(result);
+        }
         try{
             let user = req.body
             const usuario = await UsersModel.authUser(user.email,user.password);
             //res.status(200).json(usuario);
-            /*req.session.userName = user.email;
-            req.session.loggedIn = true;*/
-            ConvidadosController.getAllConvidados();
+            //req.session.userName = user.email;
+            //req.session.loggedIn = true;
             //getTodosConvidadosController(app,req,res);
+            if(!usuario){
+                res.status(401).json('Usuário não autenticado');
+                return;
+            }
+            const token = jwt.sign({userId: usuario.nome},SECRET);
+            res.status(200).json({auth: true, token});
             
         }catch(error){
             console.log(error);
-            //res.status(500).json({error: error})
-            const erro={};
+            res.status(500).json({error: error})
+            /*const erro={};
             erro.code = "Tivemos um problema ao autenticar seu usuário";
             erro.codigo = 1212;
                             
-            res.render('errorView', {erro: erro});
-            //res.end("Erro ao autenticar usuario");
-            console.log(error);
+            console.log(error);*/
         }
     }
 }

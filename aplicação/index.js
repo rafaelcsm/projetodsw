@@ -1,13 +1,16 @@
 const app = require('./config/server');
 const routes = require('./app/routes/routes');
 const usersRoutes = require('./app/routes/usersRoutes');
+const { route } = require('./config/server');
 
 usersRoutes.authUser(app);
-usersRoutes.authUserForm(app);
-routes.home(app);
+
 routes.addConvidado(app);
-routes.inserirConvidado(app);
+routes.editarConvidado(app);
 routes.getListaConvidados(app); 
 routes.getConvidado(app);
+routes.removerConvidado(app);
 
-routes.attendConvidado(app);
+
+
+module.exports = app;

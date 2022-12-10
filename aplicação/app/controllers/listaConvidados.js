@@ -1,18 +1,153 @@
 const ConvidadosModel = require('../models/listaConvidados');
+const jwt = require('jsonwebtoken');
+const SECRET = 'autenticar';
+const joi = require('joi');
+const { json } = require('express');
 
+/*function autenticacao(req,res){
+    try{
+        const token = req.headers['x-access-token']
+        
+        jwt.verify(token,SECRET, (err, decoded) =>{
+            if(err){
+                throw new Error("Usuario não autorizado, autenticação necessária.");
+            } 
+            req.userId = decoded.userId;
+           
+            
+        });
+    }catch(error){
+        res.status(401).json(error.message);
+        return;
+    };
+}
+*/
 module.exports = class ConvidadosController{
-    static async getAllConvidados (req,res, next){
+    static async getTodosConvidadosController (req,res, next){
+        try{
+            const token = req.headers['x-access-token']
+            
+            jwt.verify(token,SECRET, (err, decoded) =>{
+                if(err){
+                    throw new Error("Usuario não autorizado, autenticação necessária.");
+                } 
+                req.userId = decoded.userId;
+               
+                
+            });
+        }catch(error){
+            res.status(401).json(error.message);
+            return;
+        };
         try{
             const convidados = await ConvidadosModel.getAllConvidados();
-            convidados.forEach(convidado => {
-                console.log(`Controller Get all convidados: ${convidado.nome, convidado.emailConvidado}`)
-            })
-            res.render('listaConvidados.ejs', {convidados: convidados});
+            if(!convidados){
+                res.status(400).json("Não há nenhum convidado na lista.");
+                return;
+            }
+            res.status(200).json(convidados);
         }catch(error){
             console.log(error);
             res.status(500).json({error: error});
         }
     }
+
+    static async getConvidadoById(req,res,next){
+        try{
+            const convidado = await ConvidadosModel.getConvidadoById(req.params.id);
+            if(!convidado){
+                res.status(400).json("Não foi encontrado nenhum convidado com este código");
+                return;
+            }
+            res.status(200).json(convidado);
+        }   catch(error){
+            res.status(500).json({error: error});
+        }
+    }
+
+    static async addConvidado (req,res,next){
+        try{
+            const token = req.headers['x-access-token']
+            
+            jwt.verify(token,SECRET, (err, decoded) =>{
+                if(err){
+                    throw new Error("Usuario não autorizado, autenticação necessária.");
+                } 
+                req.userId = decoded.userId;
+               
+                
+            });
+        }catch(error){
+            res.status(401).json(error.message);
+            return;
+        };
+        //validar os campos do body usando o JOI
+        try{
+            const convidado = await ConvidadosModel.addConvidado(req.body);
+            console.log("convidado inserido: ", convidado);
+            res.status(200).json(convidado);
+        }catch(error){
+            res.status(500).json(error);
+        }
+    }
+
+    static async editarConvidado(req,res,next){
+        try{
+            const token = req.headers['x-access-token']
+            
+            jwt.verify(token,SECRET, (err, decoded) =>{
+                if(err){
+                    throw new Error("Usuario não autorizado, autenticação necessária.");
+                } 
+                req.userId = decoded.userId;
+               
+                
+            });
+        }catch(error){
+            res.status(401).json(error.message);
+            return;
+        };
+        try{
+            const convidado = await ConvidadosModel.editarConvidado(req.params.id,req.body);
+            console.log("convidado editado: ", convidado);
+            if(convidado.value == null){
+                throw new Error("Não foi possivel editar as informações deste convidado");
+            }
+            res.status(200).json(convidado.value);
+        }catch(error){
+            res.status(500).json({error: error});
+        }
+
+    }
+
+    static async removerConvidado(req,res,next){
+        try{
+            const token = req.headers['x-access-token']
+            
+            jwt.verify(token,SECRET, (err, decoded) =>{
+                if(err){
+                    throw new Error("Usuario não autorizado, autenticação necessária.");
+                } 
+                req.userId = decoded.userId;
+               
+                
+            });
+        }catch(error){
+            res.status(401).json(error.message);
+            return;
+        };
+        try{
+            const convidado = await ConvidadosModel.removerConvidado(req.params.id);
+            console.log("Remover convidado: ", convidado);
+            if(convidado.value == null){
+                throw new Error("Erro ao remover convidado");
+            }
+            res.status(200).json(convidado);
+        }catch(error){
+            res.status(500).json({error: error});
+        }
+    }
+    
 
 }
 /*const { addConvidado } = require("../models/home");
