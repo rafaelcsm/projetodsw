@@ -16,7 +16,12 @@ module.exports = {
     },
     editarConvidado: (app) =>{
         app.put('/api/listaDeConvidados/:id', ConvidadosController.editarConvidado);
+    },
+    alterarStatusConvidado: (app) =>{
+        app.patch('/api/listaDeConvidados/:id', ConvidadosController.alterarStatusConvidado);
+    },
+    removerTodosOsConvidados: (app) =>{
+        app.delete('/api/listaDeConvidados', ConvidadosController.removerTodosOsConvidados);
     }
-
 };
 

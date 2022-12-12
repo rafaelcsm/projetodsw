@@ -4,24 +4,13 @@ const SECRET = 'autenticar';
 const joi = require('joi');
 const { json } = require('express');
 
-/*function autenticacao(req,res){
-    try{
-        const token = req.headers['x-access-token']
-        
-        jwt.verify(token,SECRET, (err, decoded) =>{
-            if(err){
-                throw new Error("Usuario não autorizado, autenticação necessária.");
-            } 
-            req.userId = decoded.userId;
-           
-            
-        });
-    }catch(error){
-        res.status(401).json(error.message);
-        return;
-    };
-}
-*/
+const modeloConvidado = joi.object().keys({
+    nome: joi.string().required().min(3).max(100),
+    emailConvidado: joi.string().required().email(),
+    status: joi.string().required().min(1).max(10),
+    nroAcompanhantes:joi.number().required().min(0).max(4)
+});
+
 module.exports = class ConvidadosController{
     static async getTodosConvidadosController (req,res, next){
         try{
@@ -66,12 +55,14 @@ module.exports = class ConvidadosController{
     }
 
     static async addConvidado (req,res,next){
+        const {error,result} = modeloConvidado.validate(req.body);
         try{
             const token = req.headers['x-access-token']
             
             jwt.verify(token,SECRET, (err, decoded) =>{
                 if(err){
                     throw new Error("Usuario não autorizado, autenticação necessária.");
+                    
                 } 
                 req.userId = decoded.userId;
                
@@ -81,7 +72,14 @@ module.exports = class ConvidadosController{
             res.status(401).json(error.message);
             return;
         };
-        //validar os campos do body usando o JOI
+        if(error){
+            const result = {
+                mensagem: 'Os dados do convidado não foram preenchidos corretamente',
+                error: error.details
+            }
+            res.status(404).json(result);
+            return;
+        }
         try{
             const convidado = await ConvidadosModel.addConvidado(req.body);
             console.log("convidado inserido: ", convidado);
@@ -100,8 +98,6 @@ module.exports = class ConvidadosController{
                     throw new Error("Usuario não autorizado, autenticação necessária.");
                 } 
                 req.userId = decoded.userId;
-               
-                
             });
         }catch(error){
             res.status(401).json(error.message);
@@ -130,7 +126,6 @@ module.exports = class ConvidadosController{
                 } 
                 req.userId = decoded.userId;
                
-                
             });
         }catch(error){
             res.status(401).json(error.message);
@@ -147,65 +142,64 @@ module.exports = class ConvidadosController{
             res.status(500).json({error: error});
         }
     }
-    
 
-}
-/*const { addConvidado } = require("../models/home");
-const { getTodosConvidados, getConvidado } = require("../models/listaConvidados");
+    static async alterarStatusConvidado(req,res,next){
+        try{
+            const token = req.headers['x-access-token']
+            
+            jwt.verify(token,SECRET, (err, decoded) =>{
+                if(err){
+                    throw new Error("Usuario não autorizado, autenticação necessária.");
+                } 
+                req.userId = decoded.userId;
+               
+                
+            });
+        }catch(error){
+            res.status(401).json(error.message);
+            return;
+        };
+        try{
+            const convidado = await ConvidadosModel.alterarStatusConvidado(req.params.id,req.body);
+            console.log("status editado: ", convidado);
+            if(convidado.modifiedCount == 0){
+                throw new Error("Não foi possivel editar as informações deste convidado");
+            }
+            res.status(200).json(convidado);
+        }catch(error){
+            res.status(500).json({error: error});
+        }
 
-module.exports.getTodosConvidadosController = (app,req,res) =>{
-    getTodosConvidados((error,result) =>{
-        if(error){
-            console.log("Erro ao buscar todos os convidados >>> ",error);
-            let erro = {}; 
-            if(error.errno == 1146){
-                erro.mensagem = "A tabela de convidados não foi encontrada";
-                erro.codigo = 1146;
-                logger.log({
-                    level: 'bancoDeDados',
-                    message: error.sqlMessage
-                });
-            }else if(error.errno == 1045){
-                erro.mensagem = "A senha do banco de dados está incorreta";
-                erro.codigo = 1045;
-                logger.log({
-                    level: 'bancoDeDados',
-                    message: error.sqlMessage
-                });
+    }
+
+    static async removerTodosOsConvidados(req,res,next){
+        try{
+            const token = req.headers['x-access-token']
+            
+            jwt.verify(token,SECRET, (err, decoded) =>{
+                if(err){
+                    throw new Error("Usuario não autorizado, autenticação necessária.");
+                } 
+                req.userId = decoded.userId;
+               
+                
+            });
+        }catch(error){
+            res.status(401).json(error.message);
+            return;
+        };
+        try{
+            const convidado = await ConvidadosModel.removerTodosOsConvidados();
+            console.log("Remoção dos Convidados: ", convidado);
+
+            if(convidado.deletedCount == 0){
+                res.status(204).json('Nenhum convidado foi apagado');
+                return;
             }
-            else{
-                erro.mensagem = "Tivemos um problema ao buscar todos os convidados";
-                erro.codigo = 0000;
-                logger.log({
-                    level: 'desconhecido',
-                    message: error.code
-                });
-            }
-            res.render('errorView', {erro: erro})
-        }else{
-            res.render('listaConvidados.ejs', {convidados: result});
+            res.status(200).json(convidado);
+        }catch(error){
+            res.status(500).json({error: error});
         }
-        
-    });
+
+    }
 }
-module.exports.addConvidadoController = (app,req,res) =>{
-    let convidado = req.body;
-    console.log(convidado)
-    convidado.status = "Convidado";
-    addConvidado(convidado,(error,result) =>{
-        console.log("Resultado da inserção >>> ",result);
-        console.log("Erro ao inserir >>> ",error);
-        res.redirect('/');
-    })
-}
-module.exports.detalheConvidadoController = (app,req,res) =>{
-    let convidado = req.query;
-    getConvidado(convidado.idConvidado,(error,result) =>{
-        if(error){
-            console.log(error);
-        }else{
-            res.render('infoConvidado',{erro: {}, convidado: result[0]});
-        }
-    })
-}
-*/

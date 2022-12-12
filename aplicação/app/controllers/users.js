@@ -7,7 +7,7 @@ const SECRET = 'autenticar';
 const Joi = require('joi');
 const schemaUser = Joi.object().keys({
     email: Joi.string().email(),
-    password: Joi.number().min(1).max(3)
+    password: Joi.number()
     
  });
 
@@ -25,10 +25,6 @@ module.exports = class UsersController {
         try{
             let user = req.body
             const usuario = await UsersModel.authUser(user.email,user.password);
-            //res.status(200).json(usuario);
-            //req.session.userName = user.email;
-            //req.session.loggedIn = true;
-            //getTodosConvidadosController(app,req,res);
             if(!usuario){
                 res.status(401).json('Usuário não autenticado');
                 return;
@@ -39,11 +35,7 @@ module.exports = class UsersController {
         }catch(error){
             console.log(error);
             res.status(500).json({error: error})
-            /*const erro={};
-            erro.code = "Tivemos um problema ao autenticar seu usuário";
-            erro.codigo = 1212;
-                            
-            console.log(error);*/
+            
         }
     }
 }

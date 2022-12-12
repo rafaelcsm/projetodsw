@@ -10,6 +10,8 @@ routes.editarConvidado(app);
 routes.getListaConvidados(app); 
 routes.getConvidado(app);
 routes.removerConvidado(app);
+routes.alterarStatusConvidado(app);
+routes.removerTodosOsConvidados(app);
 
 
 
