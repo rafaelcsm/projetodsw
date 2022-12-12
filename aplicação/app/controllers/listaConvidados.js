@@ -144,7 +144,7 @@ module.exports = class ConvidadosController{
     }
 
     static async alterarStatusConvidado(req,res,next){
-        try{
+        /*try{
             const token = req.headers['x-access-token']
             
             jwt.verify(token,SECRET, (err, decoded) =>{
@@ -158,7 +158,7 @@ module.exports = class ConvidadosController{
         }catch(error){
             res.status(401).json(error.message);
             return;
-        };
+        };*/
         try{
             const convidado = await ConvidadosModel.alterarStatusConvidado(req.params.id,req.body);
             console.log("status editado: ", convidado);
